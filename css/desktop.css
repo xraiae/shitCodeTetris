@@ -1,0 +1,288 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    background-color: black;
+    color: #ffffff;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 100%;
+    border: #666 solid 3px;
+    transform: translateX(-50%);
+}
+
+.panel {
+    height: 100%;
+    width: 177vh;
+}
+
+.opening {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 10000;
+    overflow: hidden;
+    transition: all 0.5s;
+}
+
+.opening > * {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.opening p {
+    font-size: 640px;
+    position: absolute;
+    top: -300px;
+    cursor: default;
+}
+
+.opening a {
+    position: absolute;
+    bottom: -90px;
+    font-size: 15em;
+    font-weight: 700;
+    transition: bottom 0.5s;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.opening a:hover {
+    bottom: -45px;
+}
+
+.main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.5s;
+}
+
+.scorePanel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    font-weight: 700;
+}
+
+.scorePanel * {
+    position: absolute;
+}
+
+.scorePanel p {
+    bottom: 0;
+    font-size: 20vw;
+    transform: translateY(15%);
+}
+
+.scorePanel span {
+    top: 0;
+    left: 0;
+    font-size: 10vw;
+    transform: translateY(-60%);
+}
+
+.pauseShade {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, .4);
+    font-size: 4em;
+    text-align: center;
+    line-height: 100vh;
+    z-index: 10;
+}
+
+.option {
+    position: absolute;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.option .pause {
+    position: absolute;
+    top: 0;
+    right: -5%;
+    font-size: 10vw;
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.option .setting {
+    position: absolute;
+    bottom: 8%;
+    right: -5%;
+    width: 20vw;
+    height: 10vw;
+    font-weight: 700;
+    perspective: 1000px;
+    cursor: pointer;
+    z-index: 4;
+    transition: right .5s;
+}
+
+.option .setting a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 10vw;
+    backface-visibility: hidden;
+    transition: transform .5s;
+}
+
+.option .setting .cover {
+    transform: rotateY(0deg);
+}
+
+.option .setting .back {
+    transform: rotateY(180deg);
+}
+
+.option .settingPanel {
+    position: fixed;
+    right: -100vw;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    /*border: white 2px solid;*/
+    transition: right .5s;
+    z-index: 3;
+}
+
+.option .settingPanel h1 {
+    font-size: 5em;
+    text-align: center;
+}
+
+.option .settingPanel div {
+    margin: 0 auto;
+    width: 50vw;
+}
+
+/*.option .settingPanel p {*/
+/*    width: 50vw;*/
+/*    height: 35px;*/
+/*    font-size: 30px;*/
+/*}*/
+
+/*.option .settingPanel span {*/
+/*    position: relative;*/
+/*    margin: 0 auto;*/
+/*    width: 50vw;*/
+/*    font-size: 30px;*/
+/*}*/
+
+/*.option .settingPanel p:after {*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    border-bottom: #666 1px solid;*/
+/*}*/
+
+/*.option .settingPanel p:first-child {*/
+/*    margin-top: 20px;*/
+/*}*/
+
+/*.option .settingPanel span {*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    right: 0;*/
+/*    width: 200px;*/
+/*    text-align: center;*/
+/*    cursor: pointer;*/
+/*}*/
+
+.option .settingPanel label {
+    display: block;
+    position: relative;
+    width: 50vw;
+    height: 40px;
+    font-size: 30px;
+    line-height: 40px;
+}
+
+.option .settingPanel input {
+    position: absolute;
+    right: 0;
+    width: 200px;
+    height: 40px;
+    font-size: 30px;
+    text-align: center;
+    background-color: black;
+    color: white;
+    outline-style: none;
+    border: 0;
+    caret-color: transparent;
+}
+
+.gameOver {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    text-align: center;
+    transition: all 0.5s;
+}
+
+.gameOver div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 120px;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+}
+
+.gameOver p {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    line-height: 120px;
+    font-size: 120px;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    transform: translateX(-50%);
+    transition: top .5s;
+}
+
+.gameOver span {
+    position: absolute;
+    top: 125px;
+    left: 50%;
+    width: 100%;
+    font-size: 110px;
+    transform: translateX(-50%);
+    transition: top .5s;
+    cursor: pointer;
+}

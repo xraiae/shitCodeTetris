@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tetris</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="css/common.css">
+    <link media="(min-width: 900px)" rel="stylesheet" href="css/desktop.css">
+    <link media="(max-width: 900px)" rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="">
+
+</head>
+<body>
+
+<div class="panel">
+    <div class="opening">
+        <p>tetris</p>
+        <a class="start">开始</a>
+    </div>
+
+    <div class="main">
+        <div class="scorePanel">
+            <p>分数<span>00000</span></p>
+        </div>
+        <canvas id="tetris" width="240px" height="400px"></canvas>
+        <div class="pauseShade">pause</div>
+        <div class="option">
+            <a class="pause">暂停</a>
+            <div class="setting">
+                <a class="cover">设置</a>
+                <a class="back">返回</a>
+            </div>
+            <div class="settingPanel">
+                <h1>按键设置</h1>
+                <div>
+<!--                    <p>左 <span>ArrowLeft</span></p>-->
+<!--                    <p>右 <span>ArrowRight</span></p>-->
+<!--                    <p>下 <span>ArrowDown</span></p>-->
+<!--                    <p>右旋 <span>x</span></p>-->
+<!--                    <p>左旋 <span>z</span></p>-->
+<!--                    <p>快速下落 <span>c</span></p>-->
+                    <label>左 <input type="text" value="ArrowLeft"></label>
+                    <label>右 <input type="text" value="ArrowRight"></label>
+                    <label>下 <input type="text" value="ArrowDown"></label>
+                    <label>左旋 <input type="text" value="z"></label>
+                    <label>右旋 <input type="text" value="x"></label>
+                    <label>快速下落 <input type="text" value="c"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="gameOver">
+        <div>
+            <p>GAME OVER<span>重新开始</span></p>
+        </div>
+    </div>
+</div>
+
+<script src="src/tetris.js"></script>
+
+</body>
+</html>
