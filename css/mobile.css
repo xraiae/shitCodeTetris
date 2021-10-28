@@ -1,3 +1,36 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    background-color: black;
+    color: #ffffff;
+}
+
+canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    border: #666 solid 3px;
+    transform: translate(-50%, -50%);
+}
+
+.opening {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 10000;
+    overflow: hidden;
+    transition: all 0.5s;
+}
+
 .opening .en {
     display: none;
 }
@@ -34,5 +67,121 @@
 }
 
 .main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.5s;
+}
 
+.main .help {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    padding-top: 50%;
+    background-color: black;
+    z-index: 100;
+    text-align: center;
+    transition: top .5s;
+}
+
+/*.main .help * {*/
+/*    position: absolute;*/
+/*}*/
+
+.main .help h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.main .help p {
+    font-size: 2em;
+}
+
+.main .option .setting,
+.main .option .settingPanel {
+    display: none;
+}
+
+.scorePanel  {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 2em;
+    font-weight: 700;
+    z-index: 2;
+}
+
+.option .pause {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    font-size: 2em;
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.pauseShade {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, .4);
+    font-size: 2em;
+    text-align: center;
+    line-height: 100vh;
+    z-index: 10;
+}
+
+.gameOver {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    text-align: center;
+    transition: all 0.5s;
+}
+
+.gameOver div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 55px;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+}
+
+.gameOver p {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    line-height: 55px;
+    font-size: 55px;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    transform: translateX(-50%);
+    transition: transform .5s;
+}
+
+.gameOver span {
+    position: absolute;
+    top: 55px;
+    left: 50%;
+    width: 100%;
+    font-size: 50px;
+    transform: translateX(-50%);
+    transition: transform .5s;
+    cursor: pointer;
 }

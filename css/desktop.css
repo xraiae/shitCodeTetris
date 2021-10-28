@@ -31,31 +31,33 @@ canvas {
     transition: all 0.5s;
 }
 
+.opening .zh {
+    display: none;
+}
+
 .opening .en,
 .opening a {
     left: 50%;
-    transform: translateX(-50%);
 }
 
 .opening .en {
-    font-size: 640px;
     position: absolute;
-    top: -300px;
+    bottom: -150px;
+    font-size: 640px;
+    color: #696969;
     cursor: default;
+    transform: translateX(-50%);
+    filter: blur(5px);
 }
 
 .opening a {
     position: absolute;
-    bottom: -90px;
-    font-size: 15em;
+    top: 50%;
+    font-size: 170px;
     font-weight: 700;
-    transition: bottom 0.5s;
     white-space: nowrap;
     cursor: pointer;
-}
-
-.opening a:hover {
-    bottom: -45px;
+    transform: translate(-50%, -50%);
 }
 
 .main {
@@ -66,6 +68,10 @@ canvas {
     height: 100%;
     overflow: hidden;
     transition: all 0.5s;
+}
+
+.main .help {
+    display: none;
 }
 
 .scorePanel {
@@ -269,7 +275,7 @@ canvas {
     font-weight: 700;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
     transform: translateX(-50%);
-    transition: top .5s;
+    transition: transform .5s;
 }
 
 .gameOver span {
@@ -279,6 +285,6 @@ canvas {
     width: 100%;
     font-size: 110px;
     transform: translateX(-50%);
-    transition: top .5s;
+    transition: transform .5s;
     cursor: pointer;
 }

@@ -22,12 +22,12 @@ const pieces = [
         [2, 2],
         [2, 2]
     ], [
+        [3, 0, 0],
         [3, 3, 3],
-        [0, 0, 3],
         [0, 0, 0]
     ], [
+        [0, 0, 4],
         [4, 4, 4],
-        [4, 0, 0],
         [0, 0, 0]
     ], [
         [5, 5, 0],
@@ -167,14 +167,14 @@ function draw() {
 }
 
 let dropCount = 0;
-let dropInterval = 1000;
+// let dropInterval = gameSpeed;
 let lastTime = 0;
 let updateId = null;
 function update(time = 0) {
     const deltaTime = time - lastTime;
     lastTime = time;
     dropCount += deltaTime;
-    if (dropCount > dropInterval) {
+    if (dropCount > gameSpeed) {
         playerDrop();
     }
     draw();
@@ -359,10 +359,19 @@ function drawLocus() {
     });
 }
 
+const help = document.querySelector('.main .help');
 openingStart.addEventListener('click', function () {
     opening.style.top = '-100vh';
-    updateId = requestAnimationFrame(update);
-    stopFlag = false;
+    if (getComputedStyle(help,null).getPropertyValue('display') !== 'none'){
+        setTimeout(function () {
+            help.style.top = '-100%';
+            updateId = requestAnimationFrame(update);
+            stopFlag = false;
+        }, 1500);
+    } else {
+        updateId = requestAnimationFrame(update);
+        stopFlag = false;
+    }
 })
 
 const pause = document.querySelector('.pause');
@@ -406,6 +415,8 @@ function shake() {
 }
 
 const scoreLabel = document.querySelector('.scorePanel').querySelector('span');
+let gameSpeed = 1000;
+let nextSpeed = 50;
 function scoreUpdate(count) {
     let score = parseInt(scoreLabel.innerText);
     switch (count) {
@@ -425,6 +436,10 @@ function scoreUpdate(count) {
     } else {
         scoreLabel.innerText = '' + score;
     }
+    while (score > nextSpeed) {
+        gameSpeed -= (gameSpeed / 50);
+        nextSpeed += 50;
+    }
 }
 
 const gameOverPanel = document.querySelector('.gameOver');
@@ -435,7 +450,7 @@ function gameOver() {
     mainPanel.style.filter = 'blur(5px)';
     gameOverPanel.style.display = 'block';
     setTimeout(function () {
-        gameOverP.style.top = '-130px';
+        gameOverP.style.transform = 'translate(-50%, -110%)';
     }, 2000);
     updateId = requestAnimationFrame(update);
     stopFlag = false;
@@ -444,7 +459,7 @@ function gameOver() {
 gameOverSpan.addEventListener('click', function () {
     mainPanel.style.filter = '';
     gameOverPanel.style.display = 'none';
-    gameOverP.style.top = '0';
+    gameOverP.style.transform = 'translateX(-50%)';
     scoreLabel.innerText = '00000';
     arena.forEach((row, y) => {
         row.fill(0);
