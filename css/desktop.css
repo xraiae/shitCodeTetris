@@ -36,16 +36,15 @@ canvas {
     transition: all 0.5s;
 }
 
-.opening > * {
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.opening p {
+.opening .en {
     font-size: 640px;
     position: absolute;
     top: -300px;
     cursor: default;
+}
+
+.opening .zh {
+    display: none;
 }
 
 .opening a {

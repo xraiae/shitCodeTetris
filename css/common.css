@@ -31,12 +31,13 @@ canvas {
     transition: all 0.5s;
 }
 
-.opening > * {
+.opening .en,
+.opening a {
     left: 50%;
     transform: translateX(-50%);
 }
 
-.opening p {
+.opening .en {
     font-size: 640px;
     position: absolute;
     top: -300px;

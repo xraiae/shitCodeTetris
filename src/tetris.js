@@ -202,27 +202,32 @@ function checkLineClear(arena) {
     scoreUpdate(count);
 }
 
+let nextMatrixFlag= false;
 function playerDrop() {
     player.pos.y++;
     if (collide(arena, player)) {
         player.pos.y--;
-        setTimeout(function () {
-            player.pos.y++;
-            if (collide(arena, player)) {
-                player.pos.y--;
-                merge(arena, player);
-                checkLineClear(arena);
-                returnMatrix(player);
-                player.pos.y = 0;
-                player.pos.x = Math.round((arena[0].length - player.matrix[0].length) / 2 );
+        if (!nextMatrixFlag) {
+            nextMatrixFlag = true;
+            setTimeout(function () {
+                player.pos.y++;
                 if (collide(arena, player)) {
-                    matrix = [];
-                    gameOver();
-                    cancelAnimationFrame(updateId);
-                    // arena.forEach((row, y) => {row.fill(0)});
+                    player.pos.y--;
+                    merge(arena, player);
+                    checkLineClear(arena);
+                    returnMatrix(player);
+                    player.pos.y = 0;
+                    player.pos.x = Math.round((arena[0].length - player.matrix[0].length) / 2 );
+                    if (collide(arena, player)) {
+                        matrix = [];
+                        gameOver();
+                        cancelAnimationFrame(updateId);
+                        // arena.forEach((row, y) => {row.fill(0)});
+                    }
                 }
-            }
-        }, 500);
+                nextMatrixFlag = false;
+            }, 500);
+        }
     }
     dropCount = 0;
 }
@@ -304,24 +309,7 @@ document.addEventListener('keyup', function (event) {
         } else if (event.key === keyMap.rotateR) {
             playerRotate(1);
         } else if (event.key === keyMap.fastDown) {
-            while (!collide(arena, player)) {
-                player.pos.y++;
-            }
-            //重复代码
-            player.pos.y--;
-            merge(arena, player);
-            shake();
-            checkLineClear(arena);
-            returnMatrix(player);
-            player.pos.y = 0;
-            player.pos.x = Math.round((arena[0].length - player.matrix[0].length) / 2 );
-            if (collide(arena, player)) {
-                matrix = [];
-                gameOver();
-                cancelAnimationFrame(updateId);
-                // arena.forEach((row, y) => {row.fill(0)});
-            }
-            dropCount = 0;
+            fastDown();
         } else if (event.key === 'Escape') {
             cancelAnimationFrame(updateId);
             stopFlag = !stopFlag;
@@ -333,6 +321,27 @@ document.addEventListener('keyup', function (event) {
         opening.style.top = -(height + 10) + 'px';
     }
 })
+
+function fastDown() {
+    while (!collide(arena, player)) {
+        player.pos.y++;
+    }
+    //重复代码
+    player.pos.y--;
+    merge(arena, player);
+    shake();
+    checkLineClear(arena);
+    returnMatrix(player);
+    player.pos.y = 0;
+    player.pos.x = Math.round((arena[0].length - player.matrix[0].length) / 2 );
+    if (collide(arena, player)) {
+        matrix = [];
+        gameOver();
+        cancelAnimationFrame(updateId);
+        // arena.forEach((row, y) => {row.fill(0)});
+    }
+    dropCount = 0;
+}
 
 function drawLocus() {
     let locus = prejudgment();
@@ -506,14 +515,48 @@ function changeKey(e) {
     keySettings[temp].blur();
 }
 
-canvas.addEventListener('touchstart', function (e) {
-    e.preventDefault();
+let startPosX = 0;
+let startPosY = 0;
+const boxWidth = height / 20;
+// const xMoveDistance = boxWidth / 2;
+const dHeight = boxWidth / 2;
+const fdHeight = boxWidth * 5;
+let fdFlag = false;
+document.addEventListener('touchstart', function (e) {
     let touch = e.touches[0];
-    let width = this.clientWidth;
-    let height = this.clientHeight;
-    let offset = [this.offsetLeft, this.offsetTop];
-    console.log(width + ' ' + height);
-    console.log(offset[0] + ' ' + offset[1]);
-    console.log(touch.clientX + ' ' + touch.clientY);
-    // console.log((width - touch.pageX) + ' ' + (height - touch.pageY));
+    startPosX = touch.pageX;
+    startPosY = touch.pageY;
+    console.log(startPosX + ' ' + startPosY);
+    if (e.touches.length === 2) {
+        playerRotate(1);
+    } else if (e.touches.length === 3) {
+        playerRotate(-1);
+    }
+})
+
+document.addEventListener('touchmove', function (e) {
+    // e.preventDefault();
+    let touch = e.touches[0];
+    if (touch.pageX - startPosX > boxWidth) {
+        player.pos.x++;
+        if (collide(arena, player))
+            player.pos.x--;
+        startPosX = touch.pageX;
+    } else if (touch.pageX - startPosX < -boxWidth) {
+        player.pos.x--;
+        if (collide(arena, player))
+            player.pos.x++;
+        startPosX = touch.pageX;
+    }
+    if (touch.pageY - startPosY > dHeight) {
+        playerDrop();
+        startPosY = touch.pageY;
+    } else if (!fdFlag && touch.pageY - startPosY < -fdHeight) {
+        fdFlag = true;
+        fastDown();
+        startPosY = touch.pageY;
+        setTimeout(() => {
+            fdFlag = false;
+        }, 200);
+    }
 })
