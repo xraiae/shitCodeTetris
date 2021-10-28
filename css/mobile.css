@@ -45,6 +45,7 @@ canvas {
     line-height: 20vh;
     word-wrap: break-word;
     color: #696969;
+    filter: blur(5px);
 }
 
 .opening a {
