@@ -323,24 +323,27 @@ document.addEventListener('keyup', function (event) {
 })
 
 function fastDown() {
-    while (!collide(arena, player)) {
-        player.pos.y++;
+    if (!stopFlag) {
+        while (!collide(arena, player)) {
+            player.pos.y++;
+        }
+        //重复代码
+        player.pos.y--;
+        merge(arena, player);
+        shake();
+        checkLineClear(arena);
+        returnMatrix(player);
+        player.pos.y = 0;
+        player.pos.x = Math.round((arena[0].length - player.matrix[0].length) / 2 );
+        if (collide(arena, player)) {
+            drawMatrix(arena, {x: 0, y: 0});
+            cancelAnimationFrame(updateId);
+            matrix = [];
+            gameOver();
+            // arena.forEach((row, y) => {row.fill(0)});
+        }
+        dropCount = 0;
     }
-    //重复代码
-    player.pos.y--;
-    merge(arena, player);
-    shake();
-    checkLineClear(arena);
-    returnMatrix(player);
-    player.pos.y = 0;
-    player.pos.x = Math.round((arena[0].length - player.matrix[0].length) / 2 );
-    if (collide(arena, player)) {
-        matrix = [];
-        gameOver();
-        cancelAnimationFrame(updateId);
-        // arena.forEach((row, y) => {row.fill(0)});
-    }
-    dropCount = 0;
 }
 
 function drawLocus() {
@@ -399,16 +402,19 @@ function shake() {
     let timer;
     let count = 0;
     clearInterval(timer);
-    let normal = [parseInt(canvas.style.left), parseInt(canvas.style.top)];
-    timer = setInterval(function (shakeLocus) {
+    // let normal = [parseInt(canvas.style.left), parseInt(canvas.style.top)];
+    timer = setInterval(function () {
         if (count < 10) {
-            canvas.style.left = normal[0] + Math.random() * 10 * (Math.random() > 0.5 ? 1 : 0) + 'px';
-            canvas.style.top = normal[1] + Math.random() * 10 * (Math.random() > 0.5 ? 1 : 0) + 'px';
+            // canvas.style.left = normal[0] + Math.random() * 10 * (Math.random() > 0.5 ? 1 : -1) + 'px';
+            // canvas.style.top = normal[1] + Math.random() * 10 * (Math.random() > 0.5 ? 1 : -1) + 'px';
+            canvas.style.transform = 'translate(' + -(50 + Math.random() * (Math.random() > 0.5 ? 1 : -1)) +
+                '%,' + -(50 + Math.random() * (Math.random() > 0.5 ? 1 : -1)) + '%)';
             count++;
         } else {
             clearInterval(timer);
-            canvas.style.left = normal[0] +'px';
-            canvas.style.to = normal[1] +'px';
+            // canvas.style.left = normal[0] +'px';
+            // canvas.style.to = normal[1] +'px';
+            canvas.style.transform = 'translate(-50%, -50%)';
             count = 0;
         }
     }, 20);
@@ -447,13 +453,12 @@ const mainPanel = document.querySelector('.main');
 const gameOverP = gameOverPanel.querySelector('p');
 const gameOverSpan = gameOverPanel.querySelector('span');
 function gameOver() {
+    stopFlag = true;
     mainPanel.style.filter = 'blur(5px)';
     gameOverPanel.style.display = 'block';
     setTimeout(function () {
         gameOverP.style.transform = 'translate(-50%, -110%)';
     }, 2000);
-    updateId = requestAnimationFrame(update);
-    stopFlag = false;
 }
 
 gameOverSpan.addEventListener('click', function () {
@@ -463,8 +468,9 @@ gameOverSpan.addEventListener('click', function () {
     scoreLabel.innerText = '00000';
     arena.forEach((row, y) => {
         row.fill(0);
-        console.log(row);
     })
+    updateId = requestAnimationFrame(update);
+    stopFlag = false;
 })
 
 const setting = document.querySelector('.option .setting');
@@ -522,11 +528,9 @@ function changeKey(e) {
             temp = i;
             break;
         }
-        console.log(keySettings[i].style.backgroundColor);
     }
     keySettings[temp].value = e.key;
     keyMap[keyMapKeys[temp]] = keySettings[temp].value;
-    console.log(keyMap);
     keySettings[temp].blur();
 }
 
@@ -535,18 +539,24 @@ let startPosY = 0;
 const boxWidth = height / 20;
 // const xMoveDistance = boxWidth / 2;
 const dHeight = boxWidth / 2;
-const fdHeight = boxWidth * 5;
+const fdHeight = boxWidth * 3;
 let fdFlag = false;
+let doubleTouchFlag = false;
+let doubleTouchTimer = null;
 document.addEventListener('touchstart', function (e) {
     let touch = e.touches[0];
     startPosX = touch.pageX;
     startPosY = touch.pageY;
-    console.log(startPosX + ' ' + startPosY);
-    if (e.touches.length === 2) {
+    if (doubleTouchFlag) {
+        clearTimeout(doubleTouchTimer);
         playerRotate(1);
-    } else if (e.touches.length === 3) {
-        playerRotate(-1);
+        doubleTouchFlag = false;
+        return
     }
+    doubleTouchFlag = true;
+    doubleTouchTimer = setTimeout(() => {
+        doubleTouchFlag = false;
+    }, 300);
 })
 
 document.addEventListener('touchmove', function (e) {
@@ -575,3 +585,7 @@ document.addEventListener('touchmove', function (e) {
         }, 200);
     }
 })
+
+// document.addEventListener('touchend', function (e) {
+//     e.preventDefault();
+// })
